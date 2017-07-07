@@ -1,16 +1,33 @@
 var React = require('react');
 
+var MaterialInput = require('./material-input.jsx');
+
 class Jumbo extends React.Component {
     
     constructor() {
         super();
-        this.state = {
 
-        }
-        this.mose = {
-            selected_tab : 8
+        this.handleInputChange = this.handleInputChange.bind(this);
+
+        this.state = {
+            number_1 : 0,
+            number_2 : 0
         }
     }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        console.log('Changed to :', value);
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+    // Find me here!
 
     render() {
         return (
@@ -21,18 +38,16 @@ class Jumbo extends React.Component {
                     Installed without install tools
                 </p>
                 <hr className="my-4" />
-                <div className="lead text-center" style={{marginBottom : "2em"}}>
-                    <p>Select one tab</p>
-                    <p>Tab selected:{this.state.selected_tab}</p>
-                </div>
-                <div className="row">
-                    <div className="col text-center">
-                        <a className="btn btn-primary btn-lg" href="#" onClick={() => this.setState({selected_tab : 1})}>Learn more</a>
-                    </div>
-                    <div className="col text-center">
-                        <a className="btn btn-primary btn-lg" href="#" onClick={() => this.setState({selected_tab : 2})}>Learn more</a>
-                    </div>
-                </div>
+                <form className="form">
+
+                    <MaterialInput name="number_1" placeholder="Grisha" handle={this.handleInputChange} />
+
+                    <MaterialInput name="number_2" addon="@" placeholder="Name" handle={this.handleInputChange} />
+
+                </form>
+                <p>
+                    {this.state.number_1 * this.state.number_2}
+                </p>
             </div>
         );
     }
