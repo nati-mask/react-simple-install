@@ -10,8 +10,10 @@ class Jumbo extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
 
         this.state = {
-            number_1 : 0,
-            number_2 : 0
+            teken_hours : "",
+            already_hours : "",
+            already_days : "",
+            more_days : ""
         }
     }
 
@@ -20,11 +22,29 @@ class Jumbo extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        console.log('Changed to :', value);
+        console.log(name, 'changed to :', value);
 
         this.setState({
             [name]: value
         });
+    }
+
+    finCalc () {
+
+        if(!this.state.more_days || this.state.more_days < 0) return "...";
+
+        var calc = ((this.state.teken_hours * 0.8) - this.state.already_hours) / this.state.more_days;
+
+        if(!isNaN(calc)) return calc.toFixed(2);
+
+        else return "...";
+    }
+    
+    average () {
+        
+        if(!this.state.already_days || this.state.already_days < 0) return "...";
+
+        return (this.state.already_hours / this.state.already_days).toFixed(2);
     }
 
     // Find me here!
@@ -40,13 +60,20 @@ class Jumbo extends React.Component {
                 <hr className="my-4" />
                 <form className="form">
 
-                    <MaterialInput name="number_1" placeholder="Grisha" handle={this.handleInputChange} />
+                    <MaterialInput addon="Month teken" name="teken_hours" placeholder="Hours" handle={this.handleInputChange} />
 
-                    <MaterialInput name="number_2" addon="@" placeholder="Name" handle={this.handleInputChange} />
+                    <MaterialInput addon="Already worked" name="already_hours" placeholder="Hours" handle={this.handleInputChange} />
+
+                    <MaterialInput addon="Days worked" name="already_days" placeholder="Days" handle={this.handleInputChange} />
+
+                    <MaterialInput addon="Days plan" name="more_days" placeholder="Days" handle={this.handleInputChange} />
 
                 </form>
                 <p>
-                    {this.state.number_1 * this.state.number_2}
+                    Average: {this.average()}
+                </p>
+                <p>
+                    Need to work: {this.finCalc()}
                 </p>
             </div>
         );
